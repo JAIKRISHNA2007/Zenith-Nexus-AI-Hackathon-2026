@@ -1,8 +1,17 @@
+import DashboardLayout from "../../components/dashboard/DashboardLayout";
+import ChatWindow from "../../components/chat/ChatWindow";
+
 const DashboardPage = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <h1 className="text-3xl font-bold">Dashboard Page</h1>
-    </div>
+    <DashboardLayout>
+
+      <div className="h-[calc(100vh-120px)] rounded-xl overflow-hidden shadow">
+
+        <ChatWindow />
+
+      </div>
+
+    </DashboardLayout>
   );
 };
 
