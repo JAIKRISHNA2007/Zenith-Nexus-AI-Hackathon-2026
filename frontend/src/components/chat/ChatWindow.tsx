@@ -23,7 +23,7 @@ const ChatWindow = () => {
   return (
     <div className="flex h-full flex-col">
       {/* Chat Area */}
-      <div className="flex-1 overflow-y-auto bg-slate-100 px-8 py-6">
+      <div className="flex-1 overflow-y-auto scrollbar-thin bg-slate-100 px-8 py-6">
         {messages.length === 0 ? (
           <EmptyChat />
         ) : (

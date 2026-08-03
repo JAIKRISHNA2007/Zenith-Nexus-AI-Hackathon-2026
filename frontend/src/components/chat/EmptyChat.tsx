@@ -27,7 +27,7 @@ const EmptyChat = () => {
   ];
 
   return (
-    <div className="flex h-full flex-col items-center justify-center px-8 text-center">
+    <div className="flex flex-col items-center justify-center py-16 px-8 text-center">
 
       <div className="mb-6 rounded-full bg-blue-100 p-5">
         <Bot
