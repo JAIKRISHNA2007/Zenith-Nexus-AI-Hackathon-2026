@@ -4,26 +4,23 @@ import type { ChatMessage } from "../types/chat";
 interface ChatState {
   messages: ChatMessage[];
   loading: boolean;
+  typing: boolean;
 
   addMessage: (message: ChatMessage) => void;
-
   clearMessages: () => void;
-
   setLoading: (loading: boolean) => void;
+  setTyping: (typing: boolean) => void;
 }
 
 export const useChatStore = create<ChatState>((set) => ({
-  messages: [
-    {
-      id: "1",
-      sender: "ai",
-      message: "Hello! I'm your AI Database Assistant.",
-      timestamp: new Date().toLocaleTimeString(),
-    },
-  ],
+  // Initial State
+  messages: [],
 
   loading: false,
 
+  typing: false,
+
+  // Actions
   addMessage: (message) =>
     set((state) => ({
       messages: [...state.messages, message],
@@ -37,5 +34,10 @@ export const useChatStore = create<ChatState>((set) => ({
   setLoading: (loading) =>
     set({
       loading,
+    }),
+
+  setTyping: (typing) =>
+    set({
+      typing,
     }),
 }));
