@@ -1,24 +1,83 @@
-import { Bell, UserCircle } from "lucide-react";
+import {
+  Bell,
+  Search,
+  Moon,
+  UserCircle,
+  ChevronDown,
+} from "lucide-react";
 
 const Navbar = () => {
   return (
-    <header className="h-16 bg-white border-b flex justify-between items-center px-6">
+    <header className="flex h-16 items-center justify-between border-b bg-white px-6">
 
-      <h1 className="text-2xl font-bold">
-        Dashboard
-      </h1>
+      {/* Left Section */}
+      <div>
+        <h1 className="text-2xl font-bold text-slate-800">
+          Dashboard
+        </h1>
+      </div>
 
+      {/* Right Section */}
       <div className="flex items-center gap-5">
 
-        <Bell size={22}/>
+        {/* Search */}
+        <div className="relative hidden md:block">
 
-        <div className="flex items-center gap-2">
+          <Search
+            size={18}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+          />
 
-          <UserCircle size={30}/>
-
-          <span>Jeevesh</span>
+          <input
+          aria-label="Search chats"
+            type="text"
+            placeholder="Search chats..."
+            className="w-72 rounded-lg border bg-slate-50 py-2 pl-10 pr-4 text-sm outline-none transition focus:border-blue-500"
+          />
 
         </div>
+
+        {/* Theme Button */}
+
+        <button
+          className="rounded-lg p-2 transition hover:bg-slate-100"
+        >
+          <Moon size={20} />
+        </button>
+
+        {/* Notification */}
+
+        <button
+          className="relative rounded-lg p-2 transition hover:bg-slate-100"
+        >
+          <Bell size={20} />
+
+          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500"></span>
+
+        </button>
+
+        {/* User */}
+
+        <button
+          className="flex items-center gap-2 rounded-lg p-2 transition hover:bg-slate-100"
+        >
+          <UserCircle size={34} />
+
+          <div className="hidden text-left lg:block">
+
+            <p className="text-sm font-semibold">
+              Jeevesh
+            </p>
+
+            <p className="text-xs text-slate-500">
+              Frontend Developer
+            </p>
+
+          </div>
+
+          <ChevronDown size={18} />
+
+        </button>
 
       </div>
 
