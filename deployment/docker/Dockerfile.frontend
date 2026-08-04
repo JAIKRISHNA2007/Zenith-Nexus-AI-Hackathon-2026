@@ -1,0 +1,35 @@
+# -----------------------------------------
+# Stage 1 - Build React Application
+# -----------------------------------------
+
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files first (better Docker cache)
+COPY frontend/package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY frontend/ .
+
+# Build React app
+RUN npm run build
+
+
+# -----------------------------------------
+# Stage 2 - Production Server
+# -----------------------------------------
+
+FROM nginx:stable-alpine
+
+# Copy React build output
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Expose port
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
