@@ -1,18 +1,15 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 
-from ai.config.settings import (
-    GEMINI_API_KEY,
-    GEMINI_MODEL,
-)
+from ai.config.settings import GROQ_API_KEY, GROQ_MODEL
 from ai.providers.base_provider import BaseProvider
 
 
-class GeminiProvider(BaseProvider):
+class GroqProvider(BaseProvider):
 
     def __init__(self):
-        self.llm = ChatGoogleGenerativeAI(
-            model=GEMINI_MODEL,
-            google_api_key=GEMINI_API_KEY,
+        self.llm = ChatGroq(
+            model=GROQ_MODEL,
+            api_key=GROQ_API_KEY,
             temperature=0,
         )
 

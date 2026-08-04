@@ -1,7 +1,8 @@
 from ai.agents.react_agent import agent
 from ai.response import format_response
 
-THREAD_ID = "demo-user"
+
+THREAD_ID = "provider-test"
 
 
 def chat(message: str):
@@ -28,17 +29,15 @@ def chat(message: str):
 def main():
 
     chat(
-        chat(
-    """
-    Show me the top 5 products by revenue as a bar chart.
+        """
+Show me the top 5 products by revenue as a bar chart.
 
-    Explain the results.
+Explain the results.
 
-    Show the SQL query.
+Show the SQL query.
 
-    Draw the ER diagram for this database.
-    """
-)
+Draw the ER diagram for this database.
+"""
     )
 
 

@@ -2,9 +2,9 @@
 
 ## Overview
 
-This module implements the complete AI layer of the Intelligent Database Interaction & Visualization platform for the iTech AI Innovation Hackathon 2026.
+This module implements the AI layer of the Intelligent Database Interaction & Visualization Platform.
 
-The AI system is built using a ReAct (Reasoning + Acting) architecture with LangGraph, enabling natural language understanding, autonomous tool selection, SQL generation, data analysis, and visualization planning.
+It uses a **ReAct Agent (LangGraph)** to convert natural language into SQL, analyze results, generate visualization metadata, and produce business insights.
 
 ---
 
@@ -12,36 +12,33 @@ The AI system is built using a ReAct (Reasoning + Acting) architecture with Lang
 
 - Natural Language Understanding
 - ReAct Agent Workflow
-- Conversation Memory (LangGraph)
+- Conversation Memory
 - Multi-LLM Provider Architecture
-- Database Schema Analysis
-- Natural Language → SQL Generation
+- SQL Generation
 - SQL Execution Interface
 - Business Insight Generation
 - Chart Metadata Generation
 - Flowchart Metadata Generation
-- Structured Response Formatting
+- Structured JSON Responses
 
 ---
 
 ## Architecture
 
 ```
-                User
-                  │
-                  ▼
-           ReAct AI Agent
-                  │
-      ┌───────────┼────────────┐
-      ▼           ▼            ▼
- Generate SQL  Query DB   Generate Charts
-      │           │            │
-      └───────────┼────────────┘
-                  ▼
-        Business Explanation
-                  │
-                  ▼
-       Structured JSON Response
+User
+  │
+  ▼
+ReAct Agent
+  │
+  ├── Generate SQL
+  ├── Execute Query
+  ├── Generate Chart
+  ├── Generate Flowchart
+  └── Explain Results
+          │
+          ▼
+ Structured JSON Response
 ```
 
 ---
@@ -49,48 +46,52 @@ The AI system is built using a ReAct (Reasoning + Acting) architecture with Lang
 ## Folder Structure
 
 ```
-agents/         ReAct Agent
-providers/      LLM Providers
-memory/         LangGraph Memory
-prompts/        System Prompts
-tools/          AI Tools
-schemas/        Response Schemas
-response/       Response Formatter
-utils/          Utility Functions
+agents/
+providers/
+memory/
+prompts/
+tools/
+schemas/
+response/
+utils/
 ```
 
 ---
 
 ## AI Tools
 
-| Tool | Description |
-|------|-------------|
+| Tool | Purpose |
+|------|---------|
 | get_schema | Retrieve database schema |
-| generate_sql | Convert NL to SQL |
+| generate_sql | Convert NL → SQL |
 | execute_query | Execute SQL |
-| generate_chart | Produce chart metadata |
-| generate_flowchart | Produce Mermaid metadata |
+| generate_chart | Generate chart metadata |
+| generate_flowchart | Generate Mermaid diagrams |
 | explain_data | Generate business insights |
 
 ---
 
-## Integration Dependencies
+## LLM Providers
 
-### Input
+Current Provider:
 
-- Backend Database API
-- FastAPI Endpoints
+- ✅ Gemini (Production)
 
-### Output
+Architecture Ready:
 
-Structured JSON
+- ⚠️ Groq (Experimental)
+- Future providers can be added through the Provider Factory.
+
+---
+
+## Output
 
 ```json
 {
-    "query": {},
-    "chart": {},
-    "flowchart": {},
-    "explanation": ""
+  "query": {},
+  "chart": {},
+  "flowchart": {},
+  "explanation": ""
 }
 ```
 
@@ -100,19 +101,10 @@ Structured JSON
 
 - ✅ ReAct Agent
 - ✅ LangGraph Memory
-- ✅ Tool Calling
+- ✅ Multi-Provider Architecture
 - ✅ SQL Generation
 - ✅ Structured Responses
 - ✅ Error Handling
 - ⏳ Backend Integration
 - ⏳ Frontend Integration
-
----
-
-## Future Enhancements
-
-- Multi-Database Support
-- Dashboard Builder
-- Voice Queries
-- Export Reports
-- Streaming Responses
+- ⏳ Visualization Integration

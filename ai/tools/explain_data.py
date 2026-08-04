@@ -1,10 +1,12 @@
 from langchain_core.tools import tool
 
-from ai.providers.gemini import GeminiProvider
+
 from ai.utils.error_handler import tool_error_handler
 
 
-provider = GeminiProvider()
+from ai.providers import get_provider
+
+provider = get_provider()
 
 
 @tool
