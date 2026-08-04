@@ -1,12 +1,21 @@
 from typing import Dict, Any
+
 from langchain_core.tools import tool
+
+from ai.utils.error_handler import tool_error_handler
 
 
 @tool
+@tool_error_handler
 def execute_query(sql_query: str) -> Dict[str, Any]:
     """
-    Executes a SQL query.
-    Currently returns mock data.
+    Execute a SQL query against the database.
+
+    Input:
+    - SQL query
+
+    Output:
+    - Query results as JSON.
     """
 
     print(f"\nExecuting SQL:\n{sql_query}\n")

@@ -1,24 +1,38 @@
-from typing import Dict, Any
 from langchain_core.tools import tool
 
 from ai.providers.gemini import GeminiProvider
+from ai.utils.error_handler import tool_error_handler
+
+
+provider = GeminiProvider()
 
 
 @tool
-def explain_data(data: Dict[str, Any]) -> str:
+@tool_error_handler
+def explain_data(data: list) -> str:
     """
-    Uses Gemini to explain query results in natural language.
-    """
+    Analyze query results and explain the insights
+    in clear business language.
 
-    gemini = GeminiProvider()
+    Highlight important trends,
+    patterns and recommendations.
+    """
 
     prompt = f"""
-You are a business analyst.
+You are a Business Intelligence Analyst.
 
-Explain the following query result in simple English.
+Explain these query results.
 
 Data:
 {data}
+
+Provide:
+
+1. Executive Summary
+
+2. Key Insights
+
+3. Business Recommendations
 """
 
-    return gemini.generate(prompt)
+    return provider.generate(prompt)

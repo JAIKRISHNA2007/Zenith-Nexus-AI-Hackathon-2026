@@ -1,25 +1,41 @@
-from typing import Dict
 from langchain_core.tools import tool
+
+from ai.schemas import FlowchartSchema
+from ai.utils.error_handler import tool_error_handler
 
 
 @tool
-def generate_flowchart(description: str) -> Dict:
+@tool_error_handler
+def generate_flowchart(
+    diagram_type: str,
+    content: str,
+) -> dict:
     """
-    Generates a Mermaid flowchart.
-    Later this will call the visualization module.
+    Generate a Mermaid diagram.
+
+    Rules:
+    - Database relationships -> ER Diagram
+    - Business process -> Flowchart
+    - Decision making -> Decision Tree
+
+    If the user explicitly requests a diagram type,
+    always use that type.
     """
 
-    mermaid = f"""
-flowchart TD
-    A[Start]
-    B[{description}]
-    C[End]
+    diagram_type = diagram_type.lower()
 
-    A --> B
-    B --> C
-"""
-
-    return {
-        "status": "success",
-        "diagram": mermaid
+    valid = {
+        "flowchart",
+        "er",
+        "decision-tree",
     }
+
+    if diagram_type not in valid:
+        diagram_type = "flowchart"
+
+    diagram = FlowchartSchema(
+        diagram_type=diagram_type,
+        content=content,
+    )
+
+    return diagram.model_dump()

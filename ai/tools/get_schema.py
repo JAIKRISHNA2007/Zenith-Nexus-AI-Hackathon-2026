@@ -1,11 +1,19 @@
 from typing import Dict, Any
+
 from langchain_core.tools import tool
+
+from ai.utils.error_handler import tool_error_handler
 
 
 @tool
+@tool_error_handler
 def get_schema() -> Dict[str, Any]:
     """
-    Returns the database schema.
+    Retrieve the complete database schema including tables, columns,
+    and relationships.
+
+    Use this tool BEFORE generating SQL whenever database structure
+    is required.
     """
 
     return {
