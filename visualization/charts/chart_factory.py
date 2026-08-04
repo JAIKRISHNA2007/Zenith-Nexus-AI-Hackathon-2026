@@ -1,3 +1,9 @@
+"""
+chart_factory.py
+
+Creates chart objects based on chart type.
+"""
+
 from .bar_chart import BarChart
 from .line_chart import LineChart
 from .pie_chart import PieChart
@@ -6,7 +12,7 @@ from .scatter_chart import ScatterChart
 
 class ChartFactory:
 
-    _chart_registry = {
+    _registry = {
         "bar": BarChart,
         "line": LineChart,
         "pie": PieChart,
@@ -19,15 +25,20 @@ class ChartFactory:
         if not isinstance(chart_type, str):
             raise TypeError("Chart type must be a string.")
 
-        chart_type = chart_type.lower().strip()
+        chart_type = chart_type.strip().lower()
 
-        chart_class = cls._chart_registry.get(chart_type)
+        chart_class = cls._registry.get(chart_type)
 
         if chart_class is None:
-            raise ValueError(f"Unsupported chart type: {chart_type}")
+            supported = ", ".join(cls._registry.keys())
+
+            raise ValueError(
+                f"Unsupported chart type '{chart_type}'. "
+                f"Supported charts: {supported}"
+            )
 
         return chart_class()
 
     @classmethod
     def supported_charts(cls):
-        return list(cls._chart_registry.keys())
+        return list(cls._registry.keys())
