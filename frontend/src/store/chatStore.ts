@@ -2,14 +2,19 @@ import { create } from "zustand";
 import type { ChatMessage } from "../types/chat";
 
 interface ChatState {
+  // State
   messages: ChatMessage[];
   loading: boolean;
   typing: boolean;
+  visualizationLoading: boolean;
 
+  // Actions
   addMessage: (message: ChatMessage) => void;
   clearMessages: () => void;
+
   setLoading: (loading: boolean) => void;
   setTyping: (typing: boolean) => void;
+  setVisualizationLoading: (loading: boolean) => void;
 }
 
 export const useChatStore = create<ChatState>((set) => ({
@@ -19,6 +24,8 @@ export const useChatStore = create<ChatState>((set) => ({
   loading: false,
 
   typing: false,
+
+  visualizationLoading: false,
 
   // Actions
   addMessage: (message) =>
@@ -39,5 +46,10 @@ export const useChatStore = create<ChatState>((set) => ({
   setTyping: (typing) =>
     set({
       typing,
+    }),
+
+  setVisualizationLoading: (loading) =>
+    set({
+      visualizationLoading: loading,
     }),
 }));

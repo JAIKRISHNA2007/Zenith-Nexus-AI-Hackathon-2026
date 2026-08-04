@@ -13,7 +13,9 @@ const ChatInput = () => {
 
   const {
     addMessage,
+    typing,
     setTyping,
+    setVisualizationLoading,
   } = useChatStore();
 
   const sendMessage = () => {
@@ -21,7 +23,6 @@ const ChatInput = () => {
 
     const userMessage = text;
 
-    // Add user message
     addMessage({
       id: Date.now().toString(),
       sender: "user",
@@ -29,13 +30,14 @@ const ChatInput = () => {
       timestamp: new Date().toLocaleTimeString(),
     });
 
-    // Clear input
     setText("");
 
-    // Show typing indicator
+    // Show typing animation
     setTyping(true);
 
-    // Simulate AI response
+    // Show visualization skeleton
+    setVisualizationLoading(true);
+
     setTimeout(() => {
       addMessage({
         id: (Date.now() + 1).toString(),
@@ -44,53 +46,68 @@ const ChatInput = () => {
           "This is a placeholder AI response. It will be replaced by the FastAPI + Gemini backend.",
         timestamp: new Date().toLocaleTimeString(),
       });
-
+      setVisualizationLoading(true);
       setTyping(false);
+
+      setVisualizationLoading(false);
+
     }, 1500);
   };
 
   return (
     <div className="border-t bg-white p-5">
+
       <div className="flex items-center gap-3 rounded-2xl border bg-slate-50 px-4 py-3 shadow-sm">
 
-        {/* Attachment Button */}
+        {/* Attachment */}
+
         <button className="text-slate-500 transition hover:text-blue-600">
           <Paperclip size={20} />
         </button>
 
-        {/* Chat Input */}
+        {/* Input */}
+
         <input
           value={text}
+          disabled={typing}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               sendMessage();
             }
           }}
-          placeholder="Ask anything... e.g. 'Show me top 5 products by revenue'"
+          placeholder={
+            typing
+              ? "AI is generating a response..."
+              : "Ask anything... e.g. 'Show me top 5 products by revenue'"
+          }
           className="flex-1 bg-transparent outline-none"
         />
 
-        {/* Emoji Button */}
+        {/* Emoji */}
+
         <button className="text-slate-500 transition hover:text-yellow-500">
           <Smile size={20} />
         </button>
 
-        {/* Voice Button */}
+        {/* Voice */}
+
         <button className="text-slate-500 transition hover:text-green-600">
           <Mic size={20} />
         </button>
 
-        {/* Send Button */}
+        {/* Send */}
+
         <button
           onClick={sendMessage}
-          disabled={!text.trim()}
+          disabled={!text.trim() || typing}
           className="rounded-xl bg-blue-600 p-3 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300"
         >
           <Send size={20} />
         </button>
 
       </div>
+
     </div>
   );
 };
