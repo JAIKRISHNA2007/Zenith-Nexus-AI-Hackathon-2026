@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from backend.app.schemas.conversation import ConversationResponse
 
 from backend.app.database.session import get_db
 from backend.app.services.conversation_service import (
@@ -15,6 +16,10 @@ router = APIRouter(
 
 
 @router.post("/{user_id}")
+@router.post(
+    "/{user_id}",
+    response_model=ConversationResponse
+)
 def create_conversation_api(
     user_id: int,
     db: Session = Depends(get_db)
@@ -22,14 +27,20 @@ def create_conversation_api(
     return create_new_conversation(db, user_id)
 
 
-@router.get("")
+@router.get(
+    "",
+    response_model=list[ConversationResponse]
+)
 def read_conversations(
     db: Session = Depends(get_db)
 ):
     return get_all_conversations(db)
 
 
-@router.get("/{conversation_id}")
+@router.get(
+    "/{conversation_id}",
+    response_model=ConversationResponse
+)
 def read_conversation(
     conversation_id: int,
     db: Session = Depends(get_db)

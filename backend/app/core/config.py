@@ -1,17 +1,17 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
     APP_NAME: str
     APP_VERSION: str
     DEBUG: bool
+
     DATABASE_URL: str
     API_PREFIX: str
+    SECRET_KEY: str
 
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8"
-    )
+    class Config:
+        env_file = ".env"
 
 
 settings = Settings()
