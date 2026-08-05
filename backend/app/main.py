@@ -6,6 +6,8 @@ from backend.app.database.engine import engine
 from backend.app.api.users import router as users_router
 # Import models so SQLAlchemy knows about them
 from backend.app.models.user import User
+from backend.app.models.conversation import Conversation
+from backend.app.models.message import Message
 
 # Create all database tables
 Base.metadata.create_all(bind=engine)
