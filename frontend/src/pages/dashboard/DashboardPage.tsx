@@ -6,7 +6,7 @@ const DashboardPage = () => {
   return (
     <DashboardLayout>
 
-      <div className="flex h-[calc(100vh-120px)] overflow-hidden rounded-xl shadow">
+      <div className="flex h-[calc(100vh-120px)] flex-col overflow-hidden rounded-xl shadow lg:flex-row">
 
         <div className="flex-1">
 

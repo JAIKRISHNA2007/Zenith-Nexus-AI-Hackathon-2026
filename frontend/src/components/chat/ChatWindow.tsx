@@ -10,10 +10,8 @@ import { useChatStore } from "../../store/chatStore";
 const ChatWindow = () => {
   const { messages, typing } = useChatStore();
 
-  // Reference to the bottom of the chat
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll whenever messages or typing state changes
   useEffect(() => {
     bottomRef.current?.scrollIntoView({
       behavior: "smooth",
@@ -23,30 +21,43 @@ const ChatWindow = () => {
   return (
     <div className="flex h-full flex-col">
       {/* Chat Area */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin bg-slate-100 px-8 py-6">
-        {messages.length === 0 ? (
+      <div className="relative flex-1 overflow-y-auto bg-slate-100 px-8 py-6">
+
+        {/* Empty State */}
+        <div
+          className={`transition-all duration-500 ${
+            messages.length === 0
+              ? "opacity-100"
+              : "pointer-events-none absolute inset-0 opacity-0"
+          }`}
+        >
           <EmptyChat />
-        ) : (
-          <>
-            {messages.map((message) => (
-              <ChatBubble
-                key={message.id}
-                sender={message.sender}
-                message={message.message}
-                timestamp={message.timestamp}
-              />
-            ))}
+        </div>
 
-            {/* AI Typing Animation */}
-            {typing && <TypingIndicator />}
+        {/* Conversation */}
+        <div
+          className={`transition-all duration-500 ${
+            messages.length > 0
+              ? "opacity-100"
+              : "pointer-events-none absolute inset-0 opacity-0"
+          }`}
+        >
+          {messages.map((message) => (
+            <ChatBubble
+              key={message.id}
+              sender={message.sender}
+              message={message.message}
+              timestamp={message.timestamp}
+            />
+          ))}
 
-            {/* Auto Scroll Target */}
-            <div ref={bottomRef}></div>
-          </>
-        )}
+          {typing && <TypingIndicator />}
+
+          <div ref={bottomRef}></div>
+        </div>
       </div>
 
-      {/* Chat Input */}
+      {/* Input */}
       <ChatInput />
     </div>
   );

@@ -13,8 +13,8 @@ const ChatInput = () => {
 
   const {
     addMessage,
-    typing,
     setTyping,
+    typing,
     setVisualizationLoading,
   } = useChatStore();
 
@@ -32,10 +32,7 @@ const ChatInput = () => {
 
     setText("");
 
-    // Show typing animation
     setTyping(true);
-
-    // Show visualization skeleton
     setVisualizationLoading(true);
 
     setTimeout(() => {
@@ -46,27 +43,38 @@ const ChatInput = () => {
           "This is a placeholder AI response. It will be replaced by the FastAPI + Gemini backend.",
         timestamp: new Date().toLocaleTimeString(),
       });
-      setVisualizationLoading(true);
+
       setTyping(false);
-
       setVisualizationLoading(false);
-
     }, 1500);
   };
 
   return (
-    <div className="border-t bg-white p-5">
-
-      <div className="flex items-center gap-3 rounded-2xl border bg-slate-50 px-4 py-3 shadow-sm">
-
+    <div className="border-t bg-white p-3 md:p-5">
+      <div
+        className="
+          flex
+          items-center
+          gap-2
+          md:gap-3
+          rounded-2xl
+          border
+          bg-slate-50
+          px-3
+          md:px-4
+          py-3
+          shadow-sm
+        "
+      >
         {/* Attachment */}
-
-        <button className="text-slate-500 transition hover:text-blue-600">
+        <button
+          className="text-slate-500 transition hover:text-blue-600"
+          disabled={typing}
+        >
           <Paperclip size={20} />
         </button>
 
         {/* Input */}
-
         <input
           value={text}
           disabled={typing}
@@ -79,35 +87,51 @@ const ChatInput = () => {
           placeholder={
             typing
               ? "AI is generating a response..."
-              : "Ask anything... e.g. 'Show me top 5 products by revenue'"
+              : "Ask your business question..."
           }
-          className="flex-1 bg-transparent outline-none"
+          className="
+            flex-1
+            bg-transparent
+            text-sm
+            md:text-base
+            outline-none
+          "
         />
 
         {/* Emoji */}
-
-        <button className="text-slate-500 transition hover:text-yellow-500">
+        <button
+          className="text-slate-500 transition hover:text-yellow-500"
+          disabled={typing}
+        >
           <Smile size={20} />
         </button>
 
         {/* Voice */}
-
-        <button className="text-slate-500 transition hover:text-green-600">
+        <button
+          className="text-slate-500 transition hover:text-green-600"
+          disabled={typing}
+        >
           <Mic size={20} />
         </button>
 
         {/* Send */}
-
         <button
           onClick={sendMessage}
           disabled={!text.trim() || typing}
-          className="rounded-xl bg-blue-600 p-3 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+          className="
+            rounded-xl
+            bg-blue-600
+            p-3
+            text-white
+            transition
+            hover:bg-blue-700
+            disabled:cursor-not-allowed
+            disabled:bg-slate-300
+          "
         >
           <Send size={20} />
         </button>
-
       </div>
-
     </div>
   );
 };
