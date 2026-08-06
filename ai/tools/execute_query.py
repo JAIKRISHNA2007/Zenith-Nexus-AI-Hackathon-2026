@@ -3,6 +3,7 @@ from typing import Dict, Any
 from langchain_core.tools import tool
 
 from ai.utils.error_handler import tool_error_handler
+from backend.app.services.query_service import execute_query as backend_execute_query
 
 
 @tool
@@ -20,20 +21,9 @@ def execute_query(sql_query: str) -> Dict[str, Any]:
 
     print(f"\nExecuting SQL:\n{sql_query}\n")
 
+    result = backend_execute_query(sql_query)
+
     return {
         "status": "success",
-        "rows": [
-            {
-                "product_name": "Laptop",
-                "revenue": 250000
-            },
-            {
-                "product_name": "Mouse",
-                "revenue": 120000
-            },
-            {
-                "product_name": "Keyboard",
-                "revenue": 90000
-            }
-        ]
+        "rows": result.get("rows", [])
     }

@@ -3,6 +3,7 @@ from typing import Dict, Any
 from langchain_core.tools import tool
 
 from ai.utils.error_handler import tool_error_handler
+from backend.app.services.schema_service import get_database_schema
 
 
 @tool
@@ -16,34 +17,4 @@ def get_schema() -> Dict[str, Any]:
     is required.
     """
 
-    return {
-        "tables": [
-            {
-                "name": "customers",
-                "columns": [
-                    "customer_id",
-                    "name",
-                    "email",
-                    "city"
-                ]
-            },
-            {
-                "name": "products",
-                "columns": [
-                    "product_id",
-                    "product_name",
-                    "price"
-                ]
-            },
-            {
-                "name": "orders",
-                "columns": [
-                    "order_id",
-                    "customer_id",
-                    "product_id",
-                    "quantity",
-                    "order_date"
-                ]
-            }
-        ]
-    }
+    return get_database_schema()
