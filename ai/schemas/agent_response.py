@@ -12,3 +12,4 @@ class AgentResponse(BaseModel):
     flowchart: Optional[FlowchartSchema] = None
     explanation: Optional[str] = None
     metadata: Optional[Any] = None
+    response: Optional[str] = None

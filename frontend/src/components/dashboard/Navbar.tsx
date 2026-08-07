@@ -3,10 +3,15 @@ import {
   Search,
   Moon,
   UserCircle,
-  ChevronDown,
 } from "lucide-react";
+import { useAuthStore } from "../../store/authStore";
 
 const Navbar = () => {
+  const { user } = useAuthStore();
+
+  const userName = user?.name || user?.email?.split("@")[0] || "User";
+  const userSubtext = user?.email || "Authenticated User";
+
   return (
     <header className="flex h-16 items-center justify-between border-b bg-white px-4 lg:px-6">
 
@@ -63,26 +68,21 @@ const Navbar = () => {
         </button>
 
         {/* User */}
-        <button className="flex items-center gap-2 rounded-lg p-2 transition hover:bg-slate-100">
+        <div className="flex items-center gap-2 rounded-lg p-2">
 
           <UserCircle size={34} />
 
           <div className="hidden text-left xl:block">
-            <p className="text-sm font-semibold">
-              Jeevesh
+            <p className="text-sm font-semibold capitalize">
+              {userName}
             </p>
 
             <p className="text-xs text-slate-500">
-              Frontend Developer
+              {userSubtext}
             </p>
           </div>
 
-          <ChevronDown
-            size={18}
-            className="hidden md:block"
-          />
-
-        </button>
+        </div>
 
       </div>
 

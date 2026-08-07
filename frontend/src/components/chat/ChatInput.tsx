@@ -11,42 +11,13 @@ import { useChatStore } from "../../store/chatStore";
 const ChatInput = () => {
   const [text, setText] = useState("");
 
-  const {
-    addMessage,
-    setTyping,
-    typing,
-    setVisualizationLoading,
-  } = useChatStore();
+  const { typing, sendChatMessage } = useChatStore();
 
-  const sendMessage = () => {
-    if (!text.trim()) return;
-
-    const userMessage = text;
-
-    addMessage({
-      id: Date.now().toString(),
-      sender: "user",
-      message: userMessage,
-      timestamp: new Date().toLocaleTimeString(),
-    });
-
+  const handleSend = async () => {
+    if (!text.trim() || typing) return;
+    const promptText = text;
     setText("");
-
-    setTyping(true);
-    setVisualizationLoading(true);
-
-    setTimeout(() => {
-      addMessage({
-        id: (Date.now() + 1).toString(),
-        sender: "ai",
-        message:
-          "This is a placeholder AI response. It will be replaced by the FastAPI + Gemini backend.",
-        timestamp: new Date().toLocaleTimeString(),
-      });
-
-      setTyping(false);
-      setVisualizationLoading(false);
-    }, 1500);
+    await sendChatMessage(promptText);
   };
 
   return (
@@ -81,7 +52,7 @@ const ChatInput = () => {
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              sendMessage();
+              handleSend();
             }
           }}
           placeholder={
@@ -116,7 +87,7 @@ const ChatInput = () => {
 
         {/* Send */}
         <button
-          onClick={sendMessage}
+          onClick={handleSend}
           disabled={!text.trim() || typing}
           className="
             rounded-xl

@@ -14,7 +14,7 @@ def format_response(messages):
 
     for message in messages:
 
-        if hasattr(message, "name"):
+        if hasattr(message, "name") and message.name:
 
             if message.name == "generate_sql":
 
@@ -52,5 +52,20 @@ def format_response(messages):
             elif message.name == "explain_data":
 
                 response.explanation = message.content
+
+        # Extract AI assistant message content
+        msg_type = getattr(message, "type", None)
+        if msg_type == "ai" or message.__class__.__name__ == "AIMessage":
+            content = getattr(message, "content", "")
+            if isinstance(content, list):
+                text_parts = [
+                    item.get("text", "")
+                    for item in content
+                    if isinstance(item, dict) and "text" in item
+                ]
+                content = "".join(text_parts)
+
+            if isinstance(content, str) and content.strip():
+                response.response = content
 
     return response
