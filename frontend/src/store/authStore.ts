@@ -35,8 +35,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       const res = await loginApi(credentials);
       const token = res.access_token;
-      
-      const userInfo: User = { email: credentials.email };
+      const userInfo: User =
+        res.user || {
+          email: credentials.email,
+        };
       
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(userInfo));

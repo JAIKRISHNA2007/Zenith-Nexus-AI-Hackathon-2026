@@ -7,7 +7,7 @@ import {
   deleteConversationApi,
   getMessagesApi,
 } from "../services/api/conversationApi";
-import { sendChatApi } from "../services/api/chatApi";
+import { sendChatApi, type ChatResponse } from "../services/api/chatApi";
 
 interface ChatState {
   // Original State
@@ -15,6 +15,7 @@ interface ChatState {
   loading: boolean;
   typing: boolean;
   visualizationLoading: boolean;
+  latestVisualization: ChatResponse | null;
 
   // Extended State
   conversations: ConversationResponse[];
@@ -49,6 +50,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   activeConversationId: null,
   conversationsLoading: false,
   toastMessage: null,
+  latestVisualization: null,
 
   // Actions
   addMessage: (message) =>
@@ -59,6 +61,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   clearMessages: () =>
     set({
       messages: [],
+      latestVisualization: null,
     }),
 
   setLoading: (loading) =>
@@ -94,6 +97,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
         await get().selectConversation(targetId);
       } else {
         set({ activeConversationId: null, messages: [] });
+          set({ latestVisualization: null });
         sessionStorage.removeItem("activeConversationId");
       }
     } catch (err) {
@@ -104,6 +108,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
   selectConversation: async (id: number) => {
     set({ activeConversationId: id, loading: true });
+    set({ latestVisualization: null });
     sessionStorage.setItem("activeConversationId", id.toString());
     try {
       const apiMessages = await getMessagesApi(id);
@@ -132,6 +137,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
         conversations: [newConv, ...state.conversations],
         activeConversationId: newConv.id,
         messages: [],
+        latestVisualization: null,
       }));
       sessionStorage.setItem("activeConversationId", newConv.id.toString());
       get().setToastMessage("New conversation created");
@@ -155,7 +161,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
           const nextConv = remainingConvs[0];
           await get().selectConversation(nextConv.id);
         } else {
-          set({ activeConversationId: null, messages: [] });
+          set({ activeConversationId: null, messages: [], latestVisualization: null });
           sessionStorage.removeItem("activeConversationId");
         }
       }
@@ -199,6 +205,8 @@ export const useChatStore = create<ChatState>((set, get) => ({
         conversation_id: convId,
         prompt,
       });
+
+      set({ latestVisualization: chatResponse });
 
       const replyContent =
         chatResponse.response ||

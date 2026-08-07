@@ -20,5 +20,5 @@ router = APIRouter(
 )
 def visualize(request: VisualizationRequest):
     return prepare_visualization(
-        request.rows
+        request
     )

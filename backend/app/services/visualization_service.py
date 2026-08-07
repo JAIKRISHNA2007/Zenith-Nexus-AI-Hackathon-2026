@@ -1,17 +1,23 @@
 from backend.app.schemas.visualization import (
+    VisualizationRequest,
     VisualizationResponse,
 )
 
 
-def prepare_visualization(rows: list[dict]):
+def prepare_visualization(request: VisualizationRequest):
     """
-    Placeholder service.
+    Build a visualization response from the request payload.
 
-    The visualization team can later replace
-    this logic with chart recommendations.
+    The service keeps the contract stable for the frontend while
+    allowing the AI layer to decide the chart metadata.
     """
 
     return VisualizationResponse(
-        chart_type="table",
-        data=rows,
+        chartType=request.chart_type,
+        title=request.config.title or "Visualization",
+        xAxis=request.config.xAxis,
+        yAxis=request.config.yAxis,
+        category=request.config.category,
+        value=request.config.value,
+        data=request.rows,
     )
