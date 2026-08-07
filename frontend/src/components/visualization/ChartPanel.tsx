@@ -4,6 +4,22 @@ import {
   Expand,
   BarChart3,
 } from "lucide-react";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  PieChart,
+  Pie,
+  ScatterChart,
+  Scatter,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 import InsightCard from "./InsightCard";
 import VisualizationSkeleton from "../dashboard/VisualizationSkeleton";
@@ -11,7 +27,11 @@ import VisualizationSkeleton from "../dashboard/VisualizationSkeleton";
 import { useChatStore } from "../../store/chatStore";
 
 const ChartPanel = () => {
-  const { visualizationLoading } = useChatStore();
+  const { visualizationLoading, visualization } = useChatStore();
+  const chartData = Array.isArray(visualization?.data) ? visualization.data : [];
+  const chartType = visualization?.chartType || "bar";
+  const xKey = visualization?.xAxis || visualization?.category || "name";
+  const yKey = visualization?.yAxis || visualization?.value || "value";
 
   const handleDownload = () => {
     const container = document.getElementById("visualization-panel") || document.querySelector("aside");
@@ -128,6 +148,63 @@ const ChartPanel = () => {
 
         {visualizationLoading ? (
           <VisualizationSkeleton />
+        ) : visualization ? (
+          <div className="flex h-full flex-col rounded-xl border bg-white p-4">
+            <div className="mb-3">
+              <h3 className="text-base font-semibold text-slate-800">
+                {visualization.title || "Chart"}
+              </h3>
+              <p className="text-xs text-slate-500">
+                {chartType.toUpperCase()} chart generated from your query.
+              </p>
+            </div>
+
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                {chartType === "pie" ? (
+                  <PieChart>
+                    <Pie
+                      data={chartData}
+                      dataKey={yKey}
+                      nameKey={xKey}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={80}
+                      label
+                    />
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                ) : chartType === "scatter" ? (
+                  <ScatterChart>
+                    <CartesianGrid />
+                    <XAxis type="number" dataKey={xKey} name={xKey} />
+                    <YAxis type="number" dataKey={yKey} name={yKey} />
+                    <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+                    <Scatter data={chartData} fill="#3b82f6" />
+                  </ScatterChart>
+                ) : chartType === "line" ? (
+                  <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey={xKey} />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey={yKey} stroke="#2563eb" strokeWidth={2} />
+                  </LineChart>
+                ) : (
+                  <BarChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey={xKey} />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey={yKey} fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                )}
+              </ResponsiveContainer>
+            </div>
+          </div>
         ) : (
           <div className="flex h-full items-center justify-center rounded-xl border-2 border-dashed bg-white">
 

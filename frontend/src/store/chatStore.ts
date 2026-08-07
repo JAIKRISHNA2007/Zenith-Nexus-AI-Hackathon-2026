@@ -8,6 +8,10 @@ import {
   getMessagesApi,
 } from "../services/api/conversationApi";
 import { sendChatApi } from "../services/api/chatApi";
+import {
+  type VisualizationResponse,
+  generateVisualizationApi,
+} from "../services/api/visualizationApi";
 
 interface ChatState {
   // Original State
@@ -15,6 +19,7 @@ interface ChatState {
   loading: boolean;
   typing: boolean;
   visualizationLoading: boolean;
+  visualization: VisualizationResponse | null;
 
   // Extended State
   conversations: ConversationResponse[];
@@ -28,6 +33,7 @@ interface ChatState {
   setLoading: (loading: boolean) => void;
   setTyping: (typing: boolean) => void;
   setVisualizationLoading: (loading: boolean) => void;
+  setVisualization: (visualization: VisualizationResponse | null) => void;
   setToastMessage: (msg: string | null) => void;
 
   // API Actions
@@ -44,6 +50,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   loading: false,
   typing: false,
   visualizationLoading: false,
+  visualization: null,
 
   conversations: [],
   activeConversationId: null,
@@ -51,8 +58,8 @@ export const useChatStore = create<ChatState>((set, get) => ({
   toastMessage: null,
 
   // Actions
-  addMessage: (message) =>
-    set((state) => ({
+  addMessage: (message: ChatMessage) =>
+    set((state: ChatState) => ({
       messages: [...state.messages, message],
     })),
 
@@ -61,22 +68,27 @@ export const useChatStore = create<ChatState>((set, get) => ({
       messages: [],
     }),
 
-  setLoading: (loading) =>
+  setLoading: (loading: boolean) =>
     set({
       loading,
     }),
 
-  setTyping: (typing) =>
+  setTyping: (typing: boolean) =>
     set({
       typing,
     }),
 
-  setVisualizationLoading: (loading) =>
+  setVisualizationLoading: (loading: boolean) =>
     set({
       visualizationLoading: loading,
     }),
 
-  setToastMessage: (toastMessage) => set({ toastMessage }),
+  setVisualization: (visualization: VisualizationResponse | null) =>
+    set({
+      visualization,
+    }),
+
+  setToastMessage: (toastMessage: string | null) => set({ toastMessage }),
 
   // Extended API Actions
   fetchConversations: async () => {
@@ -128,7 +140,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   createNewConversation: async (userId: number = 1) => {
     try {
       const newConv = await createConversationApi(userId);
-      set((state) => ({
+      set((state: ChatState) => ({
         conversations: [newConv, ...state.conversations],
         activeConversationId: newConv.id,
         messages: [],
@@ -146,7 +158,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   deleteConversation: async (id: number) => {
     try {
       await deleteConversationApi(id);
-      const remainingConvs = get().conversations.filter((c) => c.id !== id);
+      const remainingConvs = get().conversations.filter((c: ConversationResponse) => c.id !== id);
 
       set({ conversations: remainingConvs });
 
@@ -206,6 +218,26 @@ export const useChatStore = create<ChatState>((set, get) => ({
         (chatResponse.query?.sql ? `SQL Generated: ${chatResponse.query.sql}` : null) ||
         (chatResponse.query?.result ? JSON.stringify(chatResponse.query.result, null, 2) : null) ||
         (typeof chatResponse === "string" ? chatResponse : JSON.stringify(chatResponse));
+
+      let visualization: VisualizationResponse | null = null;
+
+      if (chatResponse.chart?.chart_type) {
+        try {
+          visualization = await generateVisualizationApi({
+            chart_type: chatResponse.chart.chart_type,
+            rows: Array.isArray(chatResponse.chart.data) ? chatResponse.chart.data : [],
+            config: {
+              title: chatResponse.chart.title || "",
+              xAxis: chatResponse.chart.x_axis || null,
+              yAxis: chatResponse.chart.y_axis || null,
+            },
+          });
+        } catch (error) {
+          console.error("Visualization generation failed:", error);
+        }
+      }
+
+      set({ visualization });
 
       const aiMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
