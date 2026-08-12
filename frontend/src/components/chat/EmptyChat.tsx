@@ -10,19 +10,15 @@ const EmptyChat = () => {
   const examples = [
     {
       icon: <BarChart3 size={18} />,
-      text: "Show monthly sales",
+      text: "Show me the top 5 products by revenue.",
     },
     {
       icon: <TrendingUp size={18} />,
-      text: "Revenue trend",
-    },
-    {
-      icon: <Users size={18} />,
-      text: "Top 10 customers",
+      text: "Show me the monthly revenue trend over the last year.",
     },
     {
       icon: <Database size={18} />,
-      text: "Generate visualization",
+      text: "Which product category generates the most revenue?",
     },
   ];
 
