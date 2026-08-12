@@ -45,9 +45,9 @@ utils/          Helper functions
 ## Environment Variables
 
 ```
-LLM_PROVIDER=gemini
-GEMINI_API_KEY=...
-GEMINI_MODEL=gemini-flash-latest
+LLM_PROVIDER=llama
+LLAMA_API_KEY=...
+LLAMA_MODEL=meta/llama-3.1-8b-instruct
 ```
 
 ## Output
