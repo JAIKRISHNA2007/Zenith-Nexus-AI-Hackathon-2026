@@ -1,141 +1,395 @@
-# Zenith Nexus AI - Conversational BI & Data Visualization Agent
+# 🧠 Zenith Nexus AI
 
-[![Sairam Hackathon 2026](https://img.shields.io/badge/Hackathon-iTech_AI_Innovation_2026-blue)](https://github.com)
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688)](https://fastapi.tiangolo.com/)
-[![React Vite](https://img.shields.io/badge/Frontend-React_Vite-61DAFB)](https://vitejs.dev/)
-[![LLM Provider](https://img.shields.io/badge/LLM-NVIDIA_NIM_%2F_Gemini_%2F_Groq-green)](https://nvidia.com)
+> **Conversational Business Intelligence Platform powered by Multi-LLM Agentic AI**  
+> Ask questions in plain English → Get SQL, Charts, Insights & Diagrams.
 
-**Zenith Nexus AI** is an enterprise-grade, no-code Conversational Business Intelligence (BI) platform built for the **Sairam / iTech AI Innovation Hackathon 2026**. It empowers non-technical and technical users to connect datasets, query databases using natural language, execute safe read-only SQL, and generate real-time visualizations (Charts & Flowcharts) without writing code.
-
----
-
-## 🚀 Key Features
-
-- 💬 **ChatGPT-Like Conversational BI**: Ask complex natural-language data questions with multi-turn context.
-- ⚡ **Multi-Provider LLM Abstraction**: Supports **NVIDIA NIM / Nemotron** (Primary), **Google Gemini**, and **Groq** with automatic fallback.
-- 📊 **Dynamic Visualizations**: Native SVG rendering for **Bar**, **Line**, **Pie**, and **Scatter** charts, formatted **Data Tables**, and **KPI Cards**.
-- 🔀 **Diagram & Flowchart Generation**: Generates **Entity-Relationship (ER) Diagrams**, **Process Flows**, and **Decision Trees** using Mermaid.js syntax.
-- 🛡️ **Read-Only SQL Safety Engine**: Enforces strict read-only analytical SQL execution (`SELECT`, `JOIN`, `GROUP BY`, `HAVING`, `ORDER BY`). Blocks any DDL/DML data mutations.
-- 🗄️ **Database & Dataset Connection**:
-  - Built-in **Sample E-Commerce BI Database** (seeded with orders, customers, products, items, inventory).
-  - Drag-and-drop **CSV / Excel Dataset Upload**.
-  - **Custom SQL Database URI Connection**.
-- 🔍 **SQL Transparency**: View and copy generated SQL queries directly inside chat bubbles.
-- 📥 **Comprehensive Exports**: Export charts & insights as **PNG**, **SVG**, **CSV**, and **PDF**.
-- 🎙️ **Voice Query Input**: Speech-to-text input powered by browser speech recognition.
+[![Status](https://img.shields.io/badge/Status-Live-brightgreen)](https://zenith-nexus-ai-hackathon-2026-xvyg.vercel.app)
+[![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 
 ---
 
-## 🛠️ Required Agent Tools
+## 🌐 Live Demo
 
-Zenith Nexus AI implements five core function-calling tools:
+### 🚀 Frontend
+https://zenith-nexus-ai-hackathon-2026-xvyg.vercel.app
 
-| Tool Name | Purpose | Output |
-| :--- | :--- | :--- |
-| `get_schema` | Inspects database tables, column types, primary keys, and relationships | Structured JSON Schema |
-| `execute_query` | Safely executes read-only analytical SQL queries | JSON Query Results & Metadata |
-| `generate_chart` | Creates specifications for Bar, Line, Pie, and Scatter charts | Structured Chart Specification |
-| `generate_flowchart` | Generates Mermaid specifications for ER and Process Flow diagrams | Diagram Specification |
-| `explain_data` | Generates executive business summaries and recommendations | Natural Language Insights |
+### ⚙️ Backend API
+https://zenith-nexus-ai-backend.onrender.com
+
+### ❤️ Backend Health Check
+https://zenith-nexus-ai-backend.onrender.com/health
+
+---
+
+## 🎥 Demo Video
+
+[▶️ Watch the Zenith Nexus AI Demo Video](https://drive.google.com/file/d/10ggRxLJ2XfaTKznfNo5A6umlz4b8wUfj/view?usp=drive_link)
+
+The demo demonstrates the complete workflow from authentication and natural-language business questions to AI-generated insights and visualizations.
+
+---
+
+## ✨ Features
+
+- 💬 Natural-language business questions
+- 🤖 Agentic AI-powered Business Intelligence
+- 🧠 Meta Llama 3.1 8B Instruct
+- 🗄️ Database schema inspection
+- 🧾 Automatic SQL generation
+- 🔒 Validated read-only SQL execution
+- 📊 Automatic chart generation
+- 📈 Business insights and summaries
+- 🧩 Diagram generation
+- 📁 CSV/data analysis
+- 🔐 JWT authentication
+- 💾 Conversation history
+- 🎙️ Voice input
+- ⚡ Real-time API communication
 
 ---
 
 ## 🏗️ Architecture
 
+```mermaid
+graph TB
+    U[User]
+
+    subgraph Frontend["Frontend — React + Vite"]
+        UI[UI Components]
+        Store[Zustand State]
+        API[Axios API Client]
+    end
+
+    subgraph Backend["Backend — FastAPI"]
+        Routes[API Routes]
+        Services[Business Services]
+        Auth[JWT Authentication]
+        SQL[SQL Validation]
+        BI[BI Manager]
+    end
+
+    subgraph AI["Agentic AI Layer"]
+        Agent[AI Agent]
+        Tools[Agent Tools]
+        Memory[Conversation Memory]
+        LLM[Meta Llama 3.1 8B Instruct]
+    end
+
+    subgraph Data["Data Layer"]
+        AppDB[(Application Database)]
+        BIDB[(BI Dataset)]
+        CSV[CSV Data]
+    end
+
+    U --> UI
+    UI --> Store
+    Store --> API
+    API --> Routes
+    Routes --> Services
+    Routes --> Auth
+    Services --> Agent
+    Agent --> Tools
+    Agent --> Memory
+    Agent --> LLM
+    Tools --> SQL
+    SQL --> BI
+    BI --> BIDB
+    BI --> CSV
+    Services --> AppDB
 ```
-Zenith-Nexus-AI/
-├── frontend/             # React + Vite + TailwindCSS UI
+
+---
+
+## 🔄 Agent Workflow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant FE as Frontend
+    participant BE as Backend
+    participant AI as AI Agent
+    participant DB as BI Database
+    participant LLM as Meta Llama 3.1 8B
+
+    U->>FE: Ask business question
+    FE->>BE: Send request
+    BE->>AI: Invoke agent
+    AI->>DB: Inspect schema
+    AI->>LLM: Generate SQL
+    LLM-->>AI: SQL statement
+    AI->>DB: Execute validated read-only query
+    DB-->>AI: Query results
+    AI->>LLM: Generate business insights
+    LLM-->>AI: Insights
+    AI-->>BE: Combined response
+    BE-->>FE: JSON response
+    FE-->>U: Data + SQL + chart + insights
+```
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+| Technology     | Purpose                |
+| -------------- | ---------------------- |
+| React 19       | UI framework           |
+| TypeScript     | Type-safe development  |
+| Vite           | Frontend build tooling |
+| Tailwind CSS   | Styling                |
+| Zustand        | State management       |
+| Axios          | HTTP client            |
+| React Router   | Client-side routing    |
+| Lucide React   | Icons                  |
+| Mermaid.js     | Diagram rendering      |
+| Web Speech API | Voice input            |
+
+### Backend
+
+| Technology     | Purpose              |
+| -------------- | -------------------- |
+| Python 3.11    | Runtime              |
+| FastAPI        | API framework        |
+| SQLAlchemy 2.0 | ORM                  |
+| SQLite         | Application database |
+| JWT            | Authentication       |
+| Pydantic       | Data validation      |
+
+### AI
+
+| Technology                   | Purpose                                 |
+| ---------------------------- | --------------------------------------- |
+| Meta Llama 3.1 8B Instruct   | Large Language Model                    |
+| `meta/llama-3.1-8b-instruct` | Model identifier                        |
+| NVIDIA NIM                   | LLM serving/provider platform           |
+| Agentic AI workflow          | Query generation and business reasoning |
+
+---
+
+## 🧠 AI & Business Intelligence Flow
+
+Zenith Nexus AI converts natural-language business questions into actionable business intelligence.
+
+```text
+User Question
+      ↓
+AI Agent
+      ↓
+Schema Inspection
+      ↓
+SQL Generation
+      ↓
+SQL Validation
+      ↓
+Read-Only Query Execution
+      ↓
+Query Results
+      ↓
+Business Insight Generation
+      ↓
+Visualization
+      ↓
+Actionable Answer
+```
+
+Example:
+
+> **"Show me the monthly sales trend and identify the strongest month."**
+
+The system can:
+
+1. Understand the business question.
+2. Inspect the available data.
+3. Generate the required SQL.
+4. Validate the query.
+5. Execute the read-only query.
+6. Analyze the results.
+7. Generate a chart.
+8. Provide a natural-language business explanation.
+
+---
+
+## 📸 Screenshots
+
+### 1. Login
+
+![Zenith Nexus AI Login](docs/screenshots/login.png)
+
+### 2. Dashboard
+
+![Zenith Nexus AI Dashboard](docs/screenshots/dashboard.png)
+
+### 3. AI Query
+
+![Zenith Nexus AI AI Query](docs/screenshots/ai-query.png)
+
+### 4. Visualization
+
+![Zenith Nexus AI Visualization](docs/screenshots/visualization.png)
+
+### 5. CSV Analysis
+
+![Zenith Nexus AI CSV Analysis](docs/screenshots/csv-analysis.png)
+
+---
+
+## ☁️ Deployment
+
+### Frontend
+
+**Platform:** Vercel
+
+**Live URL:**
+[https://zenith-nexus-ai-hackathon-2026-xvyg.vercel.app](https://zenith-nexus-ai-hackathon-2026-xvyg.vercel.app)
+
+### Backend
+
+**Platform:** Render
+
+**Live URL:**
+[https://zenith-nexus-ai-backend.onrender.com](https://zenith-nexus-ai-backend.onrender.com)
+
+### LLM
+
+**Provider:** NVIDIA NIM
+
+**Model:**
+
+```text
+meta/llama-3.1-8b-instruct
+```
+
+The frontend communicates with the deployed backend through the `VITE_API_URL` environment variable.
+
+---
+
+## 🚀 Running Locally
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/JAIKRISHNA2007/Zenith-Nexus-AI-Hackathon-2026.git
+cd Zenith-Nexus-AI-Hackathon-2026
+```
+
+### 2. Start the Backend
+
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+### 3. Start the Frontend
+
+Open another terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend will run locally using the configured API URL.
+
+---
+
+## 🔐 Environment Variables
+
+### Backend
+
+```env
+LLM_PROVIDER=nvidia_nim
+
+NVIDIA_NIM_API_KEY=your_api_key
+NVIDIA_NIM_MODEL=meta/llama-3.1-8b-instruct
+NVIDIA_BASE_URL=https://integrate.api.nvidia.com/v1
+
+DATABASE_URL=sqlite:///backend/database/app.db
+API_PREFIX=/api/v1
+DEBUG=False
+APP_NAME=Zenith Nexus AI Backend
+APP_VERSION=1.0.0
+SECRET_KEY=your_secret_key
+```
+
+### Frontend
+
+```env
+VITE_API_URL=https://zenith-nexus-ai-backend.onrender.com
+```
+
+> **Never commit API keys, passwords, JWT secrets, or other sensitive credentials to GitHub.**
+
+---
+
+## 📁 Project Structure
+
+```text
+Zenith-Nexus-AI-Hackathon-2026/
+│
+├── frontend/
 │   ├── src/
-│   │   ├── components/  # Chat, Visualization Panel, DB Modal
-│   │   ├── services/    # Axios API Clients
-│   │   └── store/       # Zustand State Management
-├── backend/              # FastAPI Python Backend
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.ts
+│
+├── backend/
 │   ├── app/
-│   │   ├── api/         # Endpoints (chat, dataset, query, schema, auth)
-│   │   ├── database/    # SQLite Persistence & Seeding Engine
-│   │   └── services/    # BI Manager, SQL Validator, Query Service
-├── ai/                   # AI Agent Engine
-│   ├── providers/       # NVIDIA NIM, Gemini, Groq Abstraction Layer
-│   ├── agents/          # LangGraph ReAct Agent
-│   ├── tools/           # 5 Core Agent Function Calling Tools
-│   └── prompts/         # System Prompt & Formatter
+│   │   ├── api/
+│   │   ├── models/
+│   │   ├── repositories/
+│   │   ├── services/
+│   │   └── main.py
+│   ├── requirements.txt
+│   └── database/
+│
+├── docs/
+│   └── screenshots/
+│       ├── login.png
+│       ├── dashboard.png
+│       ├── ai-query.png
+│       ├── visualization.png
+│       └── csv-analysis.png
+│
+├── LICENSE
 └── README.md
 ```
 
 ---
 
-## ⚙️ Environment Configuration (`.env`)
+## 👥 Team — Zenith Nexus
 
-Create a `.env` file in the root directory:
-
-```env
-# Application Settings
-APP_NAME="Zenith Nexus AI"
-DEBUG=True
-DATABASE_URL="sqlite:///backend/database/app.db"
-SECRET_KEY="zenith_super_secret_key"
-
-# LLM Provider Selection (nvidia_nim | gemini | groq)
-LLM_PROVIDER=nvidia_nim
-
-# NVIDIA NIM Configuration
-NVIDIA_NIM_API_KEY=your_nvidia_nim_api_key
-NVIDIA_NIM_MODEL=nvidia/nemotron-4-340b-instruct
-NVIDIA_BASE_URL=https://integrate.api.nvidia.com/v1
-
-# Gemini Configuration (Fallback)
-GEMINI_API_KEY=your_gemini_api_key
-GEMINI_MODEL=gemini-1.5-flash
-
-# Groq Configuration
-GROQ_API_KEY=your_groq_api_key
-GROQ_MODEL=llama-3.3-70b-versatile
-```
+| Team Member     | Role                       |
+| --------------- | -------------------------- |
+| **Jai Krishna** | AI / Agentic AI            |
+| **Jeevesh**     | Frontend Development       |
+| **Ranjith**     | Backend Development        |
+| **Logesh**      | Visualization & Deployment |
 
 ---
 
-## 🚀 Quick Start Guide
+## 🎯 Vision
 
-### 1. Prerequisites
-- Python 3.10+
-- Node.js 18+
+Zenith Nexus AI aims to make Business Intelligence accessible through natural language.
 
-### 2. Backend Setup
-```bash
-# Navigate to project root
-cd Zenith-Nexus-AI-Hackathon-2026
+Instead of requiring users to understand SQL, databases, dashboards, or analytics tools, users can simply ask questions and receive:
 
-# Install Python dependencies
-pip install -r backend/requirements.txt
-pip install -r ai/requirements.txt
-
-# Start FastAPI server
-uvicorn backend.app.main:app --reload --port 8000
-```
-Backend server will run at `http://localhost:8000`.
-
-### 3. Frontend Setup
-```bash
-# Navigate to frontend directory
-cd frontend
-
-# Install Node dependencies
-npm install
-
-# Start Vite development server
-npm run dev
-```
-Frontend application will run at `http://localhost:5173`.
+**Question → Data → SQL → Analysis → Visualization → Business Insight**
 
 ---
 
-## 📸 Deliverables & Media Placeholders
+## 📄 License
 
-- **Live Deployment Link**: `[Insert Deployment URL Here]`
-- **Demo Video Walkthrough**: `[Insert 3-5 Minute Video Link Here]`
-- **Screenshots & Media**: `[Insert Screenshots Here]`
+This project is licensed under the **MIT License**.
+
+See the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🏆 Hackathon Team
-Developed for **Sairam / iTech AI Innovation Hackathon 2026**.
+<p align="center">
+
+**Zenith Nexus AI — Ask. Analyze. Visualize. Decide.**
+
+</p>
