@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Bell, Search, Moon, Sun, UserCircle, Database, Check, LogOut, ShieldCheck, Cpu, AlertCircle } from "lucide-react";
+import { Bell, Search, Moon, Sun, UserCircle, Database, Check, LogOut, AlertCircle } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
 import { useChatStore } from "../../store/chatStore";
 import { DatabaseConnectionModal } from "./DatabaseConnectionModal";

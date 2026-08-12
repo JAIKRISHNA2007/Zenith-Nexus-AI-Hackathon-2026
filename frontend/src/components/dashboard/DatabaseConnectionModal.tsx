@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Database, Upload, Link, Check, RefreshCw, X, Table } from "lucide-react";
+import { Database, Upload, Check, RefreshCw, X, Table } from "lucide-react";
 import { useChatStore } from "../../store/chatStore";
 
 interface Props {
