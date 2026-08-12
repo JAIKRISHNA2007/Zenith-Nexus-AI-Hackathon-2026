@@ -24,6 +24,15 @@ def create_conversation_api(
     user_id: int,
     db: Session = Depends(get_db)
 ):
+    from backend.app.models.user import User
+    
+    # Auto-create user if they don't exist to prevent FK constraint failures
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        user = User(id=user_id, name="Test User", email=f"test{user_id}@example.com", password="password")
+        db.add(user)
+        db.commit()
+
     return create_new_conversation(db, user_id)
 
 

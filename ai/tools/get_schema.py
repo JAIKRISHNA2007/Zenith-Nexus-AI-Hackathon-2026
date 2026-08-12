@@ -1,14 +1,12 @@
-from typing import Dict, Any
+from typing import Union, Dict, Any
 
 from langchain_core.tools import tool
 
-from ai.utils.error_handler import tool_error_handler
-from backend.app.services.schema_service import get_database_schema
+from backend.app.services.schema_service import get_compact_schema_string
 
 
 @tool
-@tool_error_handler
-def get_schema() -> Dict[str, Any]:
+def get_schema() -> str:
     """
     Retrieve the complete database schema including tables, columns,
     and relationships.
@@ -16,5 +14,7 @@ def get_schema() -> Dict[str, Any]:
     Use this tool BEFORE generating SQL whenever database structure
     is required.
     """
-
-    return get_database_schema()
+    try:
+        return get_compact_schema_string()
+    except Exception as e:
+        return f"Error retrieving schema: {str(e)}"

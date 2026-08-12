@@ -52,7 +52,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       });
       return true;
     } catch (err: any) {
-      const message = err?.response?.data?.detail || "Login failed. Please check your credentials.";
+      const detail = err?.response?.data?.detail;
+      const message =
+        typeof detail === "string"
+          ? detail
+          : Array.isArray(detail)
+          ? detail.map((d: any) => d.msg || JSON.stringify(d)).join(", ")
+          : err?.message || "Login failed. Please check your credentials.";
       set({ loading: false, error: message });
       return false;
     }
@@ -84,7 +90,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       });
       return true;
     } catch (err: any) {
-      const message = err?.response?.data?.detail || "Registration failed. Please try again.";
+      const detail = err?.response?.data?.detail;
+      const message =
+        typeof detail === "string"
+          ? detail
+          : Array.isArray(detail)
+          ? detail.map((d: any) => d.msg || JSON.stringify(d)).join(", ")
+          : err?.message || "Registration failed. Please try again.";
       set({ loading: false, error: message });
       return false;
     }

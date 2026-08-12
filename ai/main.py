@@ -26,10 +26,8 @@ def chat(message: str):
 
 
 def main():
-
     chat(
-        chat(
-    """
+        """
     Show me the top 5 products by revenue as a bar chart.
 
     Explain the results.
@@ -38,7 +36,6 @@ def main():
 
     Draw the ER diagram for this database.
     """
-)
     )
 
 

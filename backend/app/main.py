@@ -16,6 +16,7 @@ from backend.app.api.chat import router as chat_router
 from backend.app.api.schema import router as schema_router
 from backend.app.api.query import router as query_router
 from backend.app.api.visualization import router as visualization_router
+from backend.app.api.dataset import router as dataset_router
 
 
 
@@ -46,6 +47,7 @@ app.include_router(chat_router)
 app.include_router(schema_router)
 app.include_router(query_router)
 app.include_router(visualization_router)
+app.include_router(dataset_router)
 
 @app.get("/")
 def root():

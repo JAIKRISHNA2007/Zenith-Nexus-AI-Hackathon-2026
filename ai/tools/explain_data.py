@@ -1,15 +1,11 @@
+import json
 from langchain_core.tools import tool
 
-from ai.providers.gemini import GeminiProvider
-from ai.utils.error_handler import tool_error_handler
-
-
-provider = GeminiProvider()
+from ai.providers.factory import get_provider
 
 
 @tool
-@tool_error_handler
-def explain_data(data: list) -> str:
+def explain_data(data: list | str | dict) -> str:
     """
     Analyze query results and explain the insights
     in clear business language.
@@ -17,14 +13,37 @@ def explain_data(data: list) -> str:
     Highlight important trends,
     patterns and recommendations.
     """
+    try:
+        # Normalise data: LLMs sometimes pass a JSON string or a dict with 'rows'
+        if isinstance(data, str):
+            try:
+                data = json.loads(data)
+            except (json.JSONDecodeError, ValueError):
+                import ast
+                try:
+                    data = ast.literal_eval(data)
+                except (ValueError, SyntaxError):
+                    data = []
 
-    prompt = f"""
+        # If data is a dict with a 'rows' key, unwrap it
+        if isinstance(data, dict):
+            data = data.get("rows", data.get("data", []))
+
+        if not isinstance(data, list):
+            data = []
+
+        capped_data = data[:15]
+
+        if not capped_data:
+            return "No data available to analyze."
+
+        prompt = f"""
 You are a Business Intelligence Analyst.
 
 Explain these query results.
 
 Data:
-{data}
+{capped_data}
 
 Provide:
 
@@ -34,5 +53,6 @@ Provide:
 
 3. Business Recommendations
 """
-
-    return provider.generate(prompt)
+        return get_provider().generate(prompt)
+    except Exception as e:
+        return f"Error generating explanation: {str(e)}"
