@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: zenith-nexus-backend
+    runtime: python
+    buildCommand: pip install -r backend/requirements.txt && pip install -r ai/requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: APP_NAME
+        sync: false
+      - key: APP_VERSION
+        sync: false
+      - key: DEBUG
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: LLM_PROVIDER
+        sync: false
+      - key: NVIDIA_NIM_API_KEY
+        sync: false
+      - key: NVIDIA_NIM_MODEL
+        sync: false
+      - key: NVIDIA_BASE_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+    healthCheckPath: /health
