@@ -160,8 +160,8 @@ sequenceDiagram
 
 | Technology                   | Purpose                                 |
 | ---------------------------- | --------------------------------------- |
-| Meta Llama 3.1 8B Instruct   | Large Language Model                    |
-| `meta/llama-3.1-8b-instruct` | Model identifier                        |
+| NVIDIA Nemotron 3.5 Lightning | Large Language Model                    |
+| `nvidia/nemotron-3.5-lightning-30b-a3b` | Model identifier                |
 | NVIDIA NIM                   | LLM serving/provider platform           |
 | Agentic AI workflow          | Query generation and business reasoning |
 
@@ -257,7 +257,7 @@ The system can:
 **Model:**
 
 ```text
-meta/llama-3.1-8b-instruct
+nvidia/nemotron-3.5-lightning-30b-a3b
 ```
 
 The frontend communicates with the deployed backend through the `VITE_API_URL` environment variable.
@@ -300,11 +300,11 @@ The frontend will run locally using the configured API URL.
 ### Backend
 
 ```env
-LLM_PROVIDER=nvidia_nim
+LLM_PROVIDER=openrouter
 
-NVIDIA_NIM_API_KEY=your_api_key
-NVIDIA_NIM_MODEL=meta/llama-3.1-8b-instruct
-NVIDIA_BASE_URL=https://integrate.api.nvidia.com/v1
+OPENROUTER_API_KEY=your_openrouter_api_key
+OPENROUTER_MODEL=meta-llama/llama-3.1-8b-instruct
+OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 
 DATABASE_URL=sqlite:///backend/database/app.db
 API_PREFIX=/api/v1

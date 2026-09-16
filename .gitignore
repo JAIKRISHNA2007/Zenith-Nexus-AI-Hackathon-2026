@@ -13,3 +13,6 @@ __pycache__/
 
 # Database
 *.db
+
+# OS files
+desktop.ini

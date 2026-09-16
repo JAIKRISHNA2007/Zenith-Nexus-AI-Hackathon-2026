@@ -33,6 +33,8 @@ def process_chat(db: Session, conversation_id: int, prompt: str):
         error_msg = str(e)
         if ("429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg or "Quota exceeded" in error_msg) and "gemini" in error_msg.lower():
             fallback_text = "Gemini API rate limit reached (429 Resource Exhausted). Free Tier quota exceeded; please retry in a few seconds."
+        elif "429" in error_msg or "rate limit" in error_msg.lower():
+            fallback_text = "NVIDIA NIM API rate limit reached (429). Please retry in a few seconds."
         else:
             fallback_text = f"Error generating response: {error_msg}"
 

@@ -4,7 +4,7 @@
 
 This module provides the AI engine for Zenith Nexus AI.
 
-It uses **LangGraph** with **Google Gemini** to:
+It uses **LangGraph** with **NVIDIA Nemotron** to:
 
 - Convert natural language into SQL
 - Read live database schema
@@ -45,9 +45,10 @@ utils/          Helper functions
 ## Environment Variables
 
 ```
-LLM_PROVIDER=llama
-LLAMA_API_KEY=...
-LLAMA_MODEL=meta/llama-3.1-8b-instruct
+LLM_PROVIDER=openrouter
+OPENROUTER_API_KEY=your_openrouter_api_key
+OPENROUTER_MODEL=meta-llama/llama-3.1-8b-instruct
+OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 ```
 
 ## Output

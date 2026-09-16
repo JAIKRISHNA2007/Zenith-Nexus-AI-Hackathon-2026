@@ -1,6 +1,9 @@
 import logging
 from ai.config.settings import (
     LLM_PROVIDER,
+    OPENROUTER_API_KEY,
+    OPENROUTER_MODEL,
+    NVIDIA_API_KEY,
     NVIDIA_NIM_API_KEY,
     NVIDIA_NIM_MODEL,
     GEMINI_API_KEY,
@@ -14,11 +17,29 @@ logger = logging.getLogger(__name__)
 
 
 def get_provider() -> BaseProvider:
-    provider_name = (LLM_PROVIDER or "groq").lower().strip()
+    provider_name = (LLM_PROVIDER or "openrouter").lower().strip()
+
+    if provider_name in ["openrouter", "open_router"]:
+        if not OPENROUTER_API_KEY:
+            err_msg = "OpenRouter API key missing (OPENROUTER_API_KEY)."
+            logger.error(err_msg)
+            raise ValueError(err_msg)
+        try:
+            from ai.providers.nvidia_nim import OpenRouterProvider
+
+            provider = OpenRouterProvider()
+            logger.info(f"Active LLM Provider: OpenRouter | Active Model: {OPENROUTER_MODEL}")
+            print(f"[LLM Factory] Active LLM Provider: OpenRouter | Active Model: {OPENROUTER_MODEL}")
+            return provider
+        except Exception as e:
+            err_msg = f"Failed to initialize OpenRouter provider ({OPENROUTER_MODEL}): {e}"
+            logger.error(err_msg)
+            raise RuntimeError(err_msg) from e
 
     if provider_name in ["nvidia", "nvidia_nim", "nim", "nemotron"]:
-        if not NVIDIA_NIM_API_KEY:
-            err_msg = "NVIDIA NIM API key missing (NVIDIA_NIM_API_KEY)."
+        api_key = NVIDIA_API_KEY or NVIDIA_NIM_API_KEY
+        if not api_key:
+            err_msg = "NVIDIA NIM API key missing (NVIDIA_API_KEY or NVIDIA_NIM_API_KEY)."
             logger.error(err_msg)
             raise ValueError(err_msg)
         try:
@@ -69,7 +90,7 @@ def get_provider() -> BaseProvider:
 
     # General auto-detection fallback if LLM_PROVIDER is unrecognised
     logger.warning(f"Unknown LLM_PROVIDER '{LLM_PROVIDER}', attempting default provider detection.")
-    if NVIDIA_NIM_API_KEY:
+    if NVIDIA_API_KEY or NVIDIA_NIM_API_KEY:
         from ai.providers.nvidia_nim import NvidiaNimProvider
         logger.info(f"Active LLM Provider: NVIDIA NIM | Active Model: {NVIDIA_NIM_MODEL}")
         return NvidiaNimProvider()

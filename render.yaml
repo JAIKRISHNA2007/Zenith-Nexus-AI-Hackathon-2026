@@ -19,11 +19,11 @@ services:
         sync: false
       - key: LLM_PROVIDER
         sync: false
-      - key: NVIDIA_NIM_API_KEY
+      - key: OPENROUTER_API_KEY
         sync: false
-      - key: NVIDIA_NIM_MODEL
+      - key: OPENROUTER_MODEL
         sync: false
-      - key: NVIDIA_BASE_URL
+      - key: OPENROUTER_BASE_URL
         sync: false
       - key: GEMINI_API_KEY
         sync: false
