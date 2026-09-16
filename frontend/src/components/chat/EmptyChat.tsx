@@ -2,7 +2,6 @@ import {
   Bot,
   BarChart3,
   TrendingUp,
-  Users,
   Database,
 } from "lucide-react";
 

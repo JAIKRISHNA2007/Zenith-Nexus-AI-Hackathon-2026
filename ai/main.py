@@ -1,4 +1,4 @@
-from ai.agents.react_agent import agent
+from ai.agents.react_agent import get_agent
 from ai.response import format_response
 
 THREAD_ID = "demo-user"
@@ -6,7 +6,7 @@ THREAD_ID = "demo-user"
 
 def chat(message: str):
 
-    response = agent.invoke(
+    response = get_agent().invoke(
         {
             "messages": [
                 ("user", message)

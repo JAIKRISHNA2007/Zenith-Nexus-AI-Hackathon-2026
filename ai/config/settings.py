@@ -6,12 +6,12 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 load_dotenv(BASE_DIR / ".env")
 load_dotenv(BASE_DIR / "backend" / ".env")
 
-LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openrouter").lower()
+LLM_PROVIDER = "openrouter"
 
 # OpenRouter Configuration
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "meta-llama/llama-3.1-8b-instruct")
-OPENROUTER_BASE_URL = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+OPENROUTER_MODEL = "meta-llama/llama-3.3-70b-instruct"
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
 # NVIDIA NIM Configuration
 NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")

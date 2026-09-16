@@ -12,10 +12,6 @@ from ai.tools.generate_flowchart import generate_flowchart
 from ai.tools.explain_data import explain_data
 
 
-provider = get_provider()
-
-llm = provider.get_llm()
-
 tools = [
     get_schema,
     generate_sql,
@@ -24,6 +20,8 @@ tools = [
     generate_flowchart,
     explain_data,
 ]
+
+_agent = None
 
 
 def prompt_modifier(state: dict) -> list:
@@ -56,9 +54,14 @@ def prompt_modifier(state: dict) -> list:
     return [SystemMessage(content=SYSTEM_PROMPT)] + cleaned
 
 
-agent = create_react_agent(
-    model=llm,
-    tools=tools,
-    prompt=prompt_modifier,
-    checkpointer=memory,
-)
+def get_agent():
+    global _agent
+    if _agent is None:
+        provider = get_provider()
+        _agent = create_react_agent(
+            model=provider.get_llm(),
+            tools=tools,
+            prompt=prompt_modifier,
+            checkpointer=memory,
+        )
+    return _agent
